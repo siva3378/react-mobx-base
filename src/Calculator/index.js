@@ -1,40 +1,24 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as actions from './redux';
-import Speed from './Speed';
+import { observer, inject } from 'mobx-react';
+import { compose } from 'recompose';
+import CalculatorStore from './store';
+
 import './styles.css';
 
 class Calculator extends Component {
   render() {
     return (
       <div className="outer">
-        <div className="container">
-          Solve for:
-          <select onChange={e => this.props.changeMode(e.target.value)}>
-            <option value="speed">Speed</option>
-            <option value="time">Time</option>
-            <option value="distance">Distance</option>
-          </select>
-
-          <Speed
-            {...this.props.calculator}
-            changeDistance={this.props.changeDistance}
-            changeTime={this.props.changeTime}
-          />
-        </div>
+        <p>You clicked at : {CalculatorStore.name}</p>
+        <button onClick={()=> CalculatorStore.setName(new Date().toISOString())} > Click me </button>
       </div>
     );
   }
 }
 
 Calculator.propTypes = {
-  changeDistance: propTypes.function,
-  changeTime: propTypes.function,
-  calculator: propTypes.object
 }
 
-const mapStateToProps = state => ({ calculator: state.calculator });
-const mapDispatchToProps = { ...actions };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Calculator);
+// export default compose(observer,inject('CalculatorStore'))(Calculator);
+export default observer(Calculator);

@@ -4,14 +4,16 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
-import calculatorReducer from './Calculator/redux';
+import { Provider } from 'mobx-react';
 
-const rootReducer = combineReducers({ calculator: calculatorReducer });
-const store = createStore(rootReducer);
+// App stores
+import CalculatorStore from './Calculator/store';
 
-const Root = () => <Provider store={store}><App /></Provider>;
+const stores = {
+    CalculatorStore
+};
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+const root = <Provider {...stores }><App /></Provider>;
+
+ReactDOM.render(root, document.getElementById('root'));
 registerServiceWorker();
